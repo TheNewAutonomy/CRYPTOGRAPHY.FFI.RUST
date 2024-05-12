@@ -1,0 +1,26 @@
+trigger:
+- master
+pr:
+- develop
+- master
+
+strategy:
+  matrix:
+    windows-stable:
+      imageName: 'windows-2019'
+      rustup_toolchain: stable
+    mac-stable:
+      imageName: 'macos-10.14'
+      rustup_toolchain: stable
+    linux-stable:
+      imageName: 'ubuntu-18.04'
+      rustup_toolchain: stable
+
+pool:
+  vmImage: $(imageName)
+
+steps:
+  - script: cd packages/catalyst-common && cargo build --all --verbose
+    displayName: Cargo build
+  - script: cd packages/catalyst-common && cargo test --all --verbose
+    displayName: Cargo test
